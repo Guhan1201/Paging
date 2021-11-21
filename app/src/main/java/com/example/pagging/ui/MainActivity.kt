@@ -1,8 +1,8 @@
 package com.example.pagging.ui
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -44,18 +44,27 @@ class MainActivity : AppCompatActivity() {
     private fun setupList() {
         mainListAdapter = MainListAdapter()
         mainListAdapter.addLoadStateListener {
-            if (it.refresh == LoadState.Loading) {
-                binding.progressBar.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-            } else {
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
-            }
+//            if (it.refresh == LoadState.Loading) {
+//                binding.progressBar.visibility = View.VISIBLE
+//                binding.recyclerView.visibility = View.GONE
+//            } else {
+//                binding.progressBar.visibility = View.GONE
+//                binding.recyclerView.visibility = View.VISIBLE
+//            }
+            // Only show the list if refresh succeeds
+            binding.recyclerView.isVisible = it.source.refresh is LoadState.NotLoading
+            // Show loading spinner during initial load or refresh
+            binding.progressBar.isVisible = it.source.refresh is LoadState.Loading
+            // Show the retry state if initial load or refresh fails
+            binding.retry.isVisible = it.source.refresh is LoadState.Error
         }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter =
                 mainListAdapter.withLoadStateFooter(ReposLoadStateAdapter { mainListAdapter.retry() })
+        }
+        binding.retry.setOnClickListener {
+            mainListAdapter.retry()
         }
     }
 
