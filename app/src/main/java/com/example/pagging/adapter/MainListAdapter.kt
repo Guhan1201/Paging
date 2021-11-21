@@ -1,4 +1,4 @@
-package com.example.pagging
+package com.example.pagging.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,12 @@ import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pagging.R
+import com.example.pagging.model.Data
+import javax.inject.Inject
 
-class MainListAdapter : PagingDataAdapter<Data, MainListAdapter.ViewHolder>(DataDifferntiator) {
+class MainListAdapter @Inject constructor() :
+    PagingDataAdapter<Data, MainListAdapter.ViewHolder>(DataDifferntiator) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.textViewName)

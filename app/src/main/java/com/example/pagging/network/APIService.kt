@@ -1,5 +1,6 @@
-package com.example.pagging
+package com.example.pagging.network
 
+import com.example.pagging.model.ApiResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Response

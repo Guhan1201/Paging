@@ -1,4 +1,4 @@
-package com.example.pagging
+package com.example.pagging.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,15 +6,26 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pagging.adapter.MainListAdapter
+import com.example.pagging.R
+import com.example.pagging.di.DaggerAppComponent
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainViewModel
+
+    @Inject
     lateinit var mainListAdapter: MainListAdapter
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        DaggerAppComponent.builder().build().inject(this)
         recyclerView = findViewById(R.id.recyclerView)
         setupViewModel()
         setupList()
@@ -43,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         viewModel =
             ViewModelProvider(
                 this,
-                MainViewModelFactory(APIService.getApiService())
+                viewModelFactory
             )[MainViewModel::class.java]
     }
 }
