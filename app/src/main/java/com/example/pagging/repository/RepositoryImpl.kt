@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 
 class RepositoryImpl @Inject constructor(private val postDataSource: PostDataSource) : Repository {
-    override fun getPager() = Pager(PagingConfig(pageSize = 6)) {
+    override fun getPager() = Pager(PagingConfig(pageSize = 10)) {
         postDataSource
     }.liveData
 }

@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.pagging.model.Data
 import com.example.pagging.network.APIService
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class PostDataSource @Inject constructor(private val apiService: APIService) :
@@ -15,16 +16,17 @@ class PostDataSource @Inject constructor(private val apiService: APIService) :
             val currentLoadingPageKey = params.key ?: 1
             val response = apiService.getListData(currentLoadingPageKey)
             val responseData = mutableListOf<Data>()
+            delay(2000)
             val data = response.body()?.myData ?: emptyList()
             responseData.addAll(data)
-            val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
-
             return LoadResult.Page(
                 data = responseData,
-                prevKey = prevKey,
-                nextKey = currentLoadingPageKey.plus(1)
+                prevKey = null,
+                nextKey =
+                if(data.isEmpty()) null else currentLoadingPageKey.plus(1)
             )
         } catch (e: Exception) {
+            Log.e("Guhan", e.toString())
             return LoadResult.Error(e)
         }
     }
