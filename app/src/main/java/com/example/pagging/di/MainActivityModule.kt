@@ -1,9 +1,11 @@
 package com.example.pagging.di
 
 import androidx.lifecycle.ViewModelProvider
-import com.example.pagging.ui.MainViewModelFactory
-import com.example.pagging.adapter.PostDataSource
 import com.example.pagging.network.APIService
+import com.example.pagging.repository.Repository
+import com.example.pagging.repository.RepositoryImpl
+import com.example.pagging.ui.MainViewModelFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
@@ -16,7 +18,7 @@ class MainActivityModule {
     }
 
     @Provides
-    fun getViewModelProvider(postDataSource: PostDataSource): ViewModelProvider.Factory {
-        return MainViewModelFactory(postDataSource)
+    fun getViewModelProvider(repository: Repository): ViewModelProvider.Factory {
+        return MainViewModelFactory(repository)
     }
 }
